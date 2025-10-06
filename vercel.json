@@ -11,14 +11,5 @@
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
-  ],
-  "env": {
-    "NODE_ENV": "production",
-    "ADMIN_USERNAME": "@admin_username",
-    "ADMIN_PASSWORD": "@admin_password", 
-    "ADMIN_NAME": "@admin_name",
-    "ADMIN_EMAIL": "@admin_email",
-    "ADMIN_ROLE": "@admin_role",
-    "DB_PATH": "/tmp/testament.db"
-  }
+  ]
 }

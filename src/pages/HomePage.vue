@@ -26,7 +26,7 @@
             >
               <q-tab name="testament" label="Testament" />
               <q-tab v-if="defaultTestament.goal && defaultTestament.goal.trim()" name="goal" label="Goal" />
-              <q-tab v-if="defaultTestament.images && defaultTestament.images.length > 0" name="gallery" label="Image Gallery" />
+              <q-tab v-if="defaultTestament.images && defaultTestament.images.length > 0" name="gallery" label="Images" />
               <q-tab v-if="defaultTestament.references && defaultTestament.references.length > 0" name="references" label="References" />
             </q-tabs>
 

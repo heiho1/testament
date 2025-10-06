@@ -34,7 +34,7 @@
             >
               <q-tab name="testament" label="Testament" />
               <q-tab v-if="testament.goal && testament.goal.trim()" name="goal" label="Goal" />
-              <q-tab v-if="testament.images && testament.images.length > 0" name="gallery" label="Image Gallery" />
+              <q-tab v-if="testament.images && testament.images.length > 0" name="gallery" label="Images" />
               <q-tab v-if="testament.references && testament.references.length > 0" name="references" label="References" />
             </q-tabs>
 

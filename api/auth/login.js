@@ -4,7 +4,7 @@
  */
 
 import { createHash } from 'crypto'
-import { getUserByUsername, updateUserLastLogin } from '../../src/utils/database.js'
+import { getUserByUsername, updateUserLastLogin } from '../../src/utils/database-json.js'
 import { corsHeaders, ensureDatabase, handleCORS, errorResponse, successResponse } from '../_utils.js'
 
 export default async function handler(req, res) {

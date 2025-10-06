@@ -3,7 +3,7 @@
  * Common functions and middleware for Vercel serverless functions
  */
 
-import { initDatabase, createUser, getUserByUsername } from '../src/utils/database.js'
+import { initDatabase, createUser, getUserByUsername } from '../src/utils/database-json.js'
 import { createHash, randomBytes } from 'crypto'
 
 // CORS headers for all API responses

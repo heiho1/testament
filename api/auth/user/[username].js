@@ -3,7 +3,7 @@
  * Handles user information retrieval
  */
 
-import { getUserByUsername } from '../../../src/utils/database.js'
+import { getUserByUsername } from '../../../src/utils/database-json.js'
 import { corsHeaders, ensureDatabase, handleCORS, errorResponse, successResponse } from '../../_utils.js'
 
 export default async function handler(req, res) {

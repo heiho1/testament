@@ -3,7 +3,7 @@
  * Handles default testament operations
  */
 
-import { getDefaultTestamentId, setDefaultTestament, clearDefaultTestament, getTestament } from '../src/utils/database.js'
+import { getDefaultTestamentId, setDefaultTestament, clearDefaultTestament, getTestament } from '../src/utils/database-json.js'
 import { corsHeaders, ensureDatabase, handleCORS, errorResponse, successResponse } from './_utils.js'
 
 export default async function handler(req, res) {

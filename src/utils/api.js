@@ -1,5 +1,6 @@
 // API client for testament backend
-const API_BASE = 'http://localhost:3001/api'
+// Use localhost in development, relative URLs in production
+const API_BASE = import.meta.env.DEV ? 'http://localhost:3001/api' : '/api'
 
 async function apiCall(endpoint, options = {}) {
   try {

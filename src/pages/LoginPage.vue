@@ -57,15 +57,7 @@
         </q-form>
       </q-card-section>
 
-      <q-separator />
 
-      <q-card-section>
-        <div class="text-caption" :style="{ color: lighterForegroundColor }">
-          <div class="q-mb-sm"><strong>Demo Accounts:</strong></div>
-          <div>Admin: username: <code>admin</code>, password: <code>admin123</code></div>
-          <div>Author: username: <code>author</code>, password: <code>author123</code></div>
-        </div>
-      </q-card-section>
     </q-card>
   </q-page>
 </template>

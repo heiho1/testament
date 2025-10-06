@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Storage</title>
+</head>
+<body>
+    <h1>Testament Storage Debug</h1>
+    <button onclick="showStorage()">Show Storage</button>
+    <button onclick="clearStorage()">Clear All Storage</button>
+    <pre id="output"></pre>
+
+    <script>
+        function showStorage() {
+            const testaments = localStorage.getItem('testaments');
+            const defaultId = localStorage.getItem('default_testament_id');
+            const auth = localStorage.getItem('testament_auth');
+
+            const output = document.getElementById('output');
+            output.textContent = 'Testaments:\n' + JSON.stringify(JSON.parse(testaments || '[]'), null, 2) +
+                '\n\nDefault ID: ' + defaultId +
+                '\n\nAuth: ' + auth;
+        }
+
+        function clearStorage() {
+            if (confirm('Clear all storage?')) {
+                localStorage.clear();
+                alert('Storage cleared!');
+                showStorage();
+            }
+        }
+
+        showStorage();
+    </script>
+</body>
+</html>

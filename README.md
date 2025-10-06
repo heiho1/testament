@@ -64,8 +64,9 @@ Testament provides a comprehensive platform for creating, managing, and sharing 
 
 ### Environment Configuration
 
-Testament supports loading configuration from a `.env` file for automated deployment:
+Testament supports environment-aware configuration loading:
 
+**Development Mode (NODE_ENV != 'production'):**
 ```bash
 # Copy the example file
 cp .env.example .env
@@ -77,6 +78,19 @@ ADMIN_NAME=Administrator
 ADMIN_EMAIL=admin@example.com
 ADMIN_ROLE=admin
 
-# Create admin user from environment
+# Create admin user from .env file
 npm run create-admin -- --from-env
+```
+
+**Production Mode (NODE_ENV = 'production'):**
+```bash
+# Set environment variables in your system
+export ADMIN_USERNAME=admin
+export ADMIN_PASSWORD=your-secure-password
+export ADMIN_NAME=Administrator
+export ADMIN_EMAIL=admin@example.com
+export ADMIN_ROLE=admin
+
+# Create admin user from system environment
+NODE_ENV=production npm run create-admin -- --from-env
 ```

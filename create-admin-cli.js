@@ -6,8 +6,15 @@ import { dirname, join } from 'path'
 import { createHash, randomBytes } from 'crypto'
 import { config } from 'dotenv'
 
-// Load environment variables from .env file
-config()
+// Load environment variables from .env file only in development
+// In production, use existing process.env variables
+const isDevelopment = process.env.NODE_ENV !== 'production'
+if (isDevelopment) {
+  config()
+  console.log('🔧 Development mode: Loading environment variables from .env file')
+} else {
+  console.log('🚀 Production mode: Using system environment variables')
+}
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -142,6 +149,10 @@ Environment Variables (for --from-env):
   ADMIN_NAME - Admin full name (required)
   ADMIN_EMAIL - Admin email (optional)
   ADMIN_ROLE - Admin role: admin, author, public (default: admin)
+
+Environment Loading:
+  - Development (NODE_ENV != 'production'): Loads from .env file
+  - Production (NODE_ENV = 'production'): Uses system environment variables
 `)
     return null
   }
@@ -162,7 +173,11 @@ Environment Variables (for --from-env):
       console.log('Required: ADMIN_USERNAME, ADMIN_PASSWORD, ADMIN_NAME')
       console.log('Optional: ADMIN_EMAIL, ADMIN_ROLE')
       console.log('')
-      console.log('Create a .env file with these variables or set them in your environment')
+      if (isDevelopment) {
+        console.log('Development: Create a .env file with these variables')
+      } else {
+        console.log('Production: Set these variables in your system environment')
+      }
       return null
     }
     

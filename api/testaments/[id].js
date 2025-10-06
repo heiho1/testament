@@ -47,15 +47,17 @@ export default async function handler(req, res) {
           return errorResponse(res, 'Method not allowed for specific testament', 405)
         }
         // Create new testament
-        const createResult = dbSaveTestament(req.body)
-        return successResponse(res, { success: true, id: req.body.id }, 201)
+        const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+        const createResult = dbSaveTestament(body)
+        return successResponse(res, { success: true, id: body.id }, 201)
         
       case 'PUT':
         if (!id) {
           return errorResponse(res, 'Testament ID required for update', 400)
         }
         // Update testament
-        const updateResult = dbSaveTestament(req.body)
+        const updateBody = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+        const updateResult = dbSaveTestament(updateBody)
         return successResponse(res, { success: true, id: id })
         
       case 'DELETE':

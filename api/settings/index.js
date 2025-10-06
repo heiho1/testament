@@ -45,7 +45,8 @@ export default async function handler(req, res) {
         return successResponse(res, settings)
         
       case 'POST':
-        saveSetting('site_settings', req.body)
+        const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+        saveSetting('site_settings', body)
         return successResponse(res, { success: true })
         
       default:

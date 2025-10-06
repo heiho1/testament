@@ -25,7 +25,8 @@ export default async function handler(req, res) {
   ensureDatabase()
   
   try {
-    const { username, password } = req.body
+    const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+    const { username, password } = body
     
     if (!username || !password) {
       return errorResponse(res, 'Username and password are required', 400)

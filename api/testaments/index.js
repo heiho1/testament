@@ -30,8 +30,9 @@ export default async function handler(req, res) {
         
       case 'POST':
         // Create new testament
-        const result = dbSaveTestament(req.body)
-        return successResponse(res, { success: true, id: req.body.id }, 201)
+        const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+        const result = dbSaveTestament(body)
+        return successResponse(res, { success: true, id: body.id }, 201)
         
       default:
         return errorResponse(res, 'Method not allowed', 405)

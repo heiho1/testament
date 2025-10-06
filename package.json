@@ -30,6 +30,7 @@
     "@vitejs/plugin-vue": "^5.2.4",
     "better-sqlite3": "^12.4.1",
     "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "quasar": "^2.18.5",
     "sass-embedded": "^1.93.2",

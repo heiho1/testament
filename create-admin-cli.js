@@ -4,12 +4,18 @@ import Database from 'better-sqlite3'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
 import { createHash, randomBytes } from 'crypto'
+import { config } from 'dotenv'
+
+// Load environment variables from .env file
+config()
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-// Database file path
-const dbPath = join(__dirname, 'testament.db')
+// Database file path - use environment variable or default
+const dbPath = process.env.DB_PATH ? 
+  (process.env.DB_PATH.startsWith('/') ? process.env.DB_PATH : join(__dirname, process.env.DB_PATH)) :
+  join(__dirname, 'testament.db')
 
 // User roles
 const ROLES = {
@@ -118,21 +124,81 @@ function parseArgs() {
 
 Usage:
   npm run create-admin -- --create <username> <password> <name> [email] [role]
+  npm run create-admin -- --from-env
   npm run create-admin -- --list
   npm run create-admin -- --help
 
 Examples:
   npm run create-admin -- --create admin admin123 "Admin User" admin@example.com admin
   npm run create-admin -- --create author secret123 "John Doe" john@example.com author
+  npm run create-admin -- --from-env
   npm run create-admin -- --list
 
 Roles: admin, author, public (default: admin)
+
+Environment Variables (for --from-env):
+  ADMIN_USERNAME - Admin username (required)
+  ADMIN_PASSWORD - Admin password (required)
+  ADMIN_NAME - Admin full name (required)
+  ADMIN_EMAIL - Admin email (optional)
+  ADMIN_ROLE - Admin role: admin, author, public (default: admin)
 `)
     return null
   }
   
   if (args[0] === '--list') {
     return { action: 'list' }
+  }
+  
+  if (args[0] === '--from-env') {
+    const username = process.env.ADMIN_USERNAME
+    const password = process.env.ADMIN_PASSWORD
+    const name = process.env.ADMIN_NAME
+    const email = process.env.ADMIN_EMAIL
+    const role = process.env.ADMIN_ROLE || 'admin'
+    
+    if (!username || !password || !name) {
+      console.log('❌ Error: Missing required environment variables')
+      console.log('Required: ADMIN_USERNAME, ADMIN_PASSWORD, ADMIN_NAME')
+      console.log('Optional: ADMIN_EMAIL, ADMIN_ROLE')
+      console.log('')
+      console.log('Create a .env file with these variables or set them in your environment')
+      return null
+    }
+    
+    console.log(`📋 Loading admin credentials from environment variables:`)
+    console.log(`   Username: ${username}`)
+    console.log(`   Name: ${name}`)
+    console.log(`   Email: ${email || 'not provided'}`)
+    console.log(`   Role: ${role}`)
+    console.log('')
+    
+    let roleValue = ROLES.ADMIN
+    switch (role.toLowerCase()) {
+      case 'admin':
+        roleValue = ROLES.ADMIN
+        break
+      case 'author':
+        roleValue = ROLES.AUTHOR
+        break
+      case 'public':
+        roleValue = ROLES.PUBLIC
+        break
+      default:
+        console.log(`❌ Error: Invalid role '${role}'. Valid roles: admin, author, public`)
+        return null
+    }
+    
+    return {
+      action: 'create',
+      userData: {
+        username,
+        password,
+        name,
+        email: email || null,
+        role: roleValue
+      }
+    }
   }
   
   if (args[0] === '--create') {

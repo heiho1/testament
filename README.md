@@ -55,7 +55,28 @@ Testament provides a comprehensive platform for creating, managing, and sharing 
 ## Getting Started
 
 1. Install dependencies: `npm install`
-2. Create an admin user: `npm run create-admin`
+2. Create an admin user:
+   - Interactive mode: `npm run create-admin -- --create <username> <password> <name> [email] [role]`
+   - From environment variables: Copy `.env.example` to `.env`, customize values, then run `npm run create-admin -- --from-env`
 3. Start the backend server: `npm run server`
 4. Start the development server: `npm run dev`
 5. Access the application at `http://localhost:5173`
+
+### Environment Configuration
+
+Testament supports loading configuration from a `.env` file for automated deployment:
+
+```bash
+# Copy the example file
+cp .env.example .env
+
+# Edit the values
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=your-secure-password
+ADMIN_NAME=Administrator
+ADMIN_EMAIL=admin@example.com
+ADMIN_ROLE=admin
+
+# Create admin user from environment
+npm run create-admin -- --from-env
+```

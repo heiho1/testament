@@ -8,7 +8,7 @@
  * environment variables for configuration.
  */
 
-import { initDatabase, createUser } from './src/utils/database.js'
+import { initDatabase, createUser, getUserByUsername } from './src/utils/database.js'
 import { createHash, randomBytes } from 'crypto'
 
 // Environment variables for admin user
@@ -46,26 +46,20 @@ async function createAdminUser() {
     console.log('🔧 Vercel Bootstrap: Initializing database...')
     
     // Initialize database
-    const db = initDatabase()
+    initDatabase()
     
     // Check if admin user already exists
-    const existingUser = db.prepare('SELECT id FROM users WHERE username = ?').get(ADMIN_USERNAME)
+    const existingUser = getUserByUsername(ADMIN_USERNAME)
     
     if (existingUser) {
       console.log(`✅ Admin user '${ADMIN_USERNAME}' already exists (ID: ${existingUser.id})`)
-      db.close()
       return
     }
     
-    // Create admin user
+    // Create admin user with hashed password
     const { hash, salt } = hashPassword(ADMIN_PASSWORD)
     
-    const insertUser = db.prepare(`
-      INSERT INTO users (username, password_hash, password_salt, role, name, email, active)
-      VALUES (?, ?, ?, ?, ?, ?, 1)
-    `)
-    
-    const result = insertUser.run(
+    const result = createUser(
       ADMIN_USERNAME,
       hash,
       salt,
@@ -74,15 +68,19 @@ async function createAdminUser() {
       ADMIN_EMAIL || null
     )
     
-    console.log(`✅ Admin user '${ADMIN_USERNAME}' created successfully (ID: ${result.lastInsertRowid})`)
-    console.log(`   Name: ${ADMIN_NAME}`)
-    console.log(`   Email: ${ADMIN_EMAIL || 'none'}`)
-    console.log(`   Role: ${ADMIN_ROLE}`)
-    
-    db.close()
+    if (result.success) {
+      console.log(`✅ Admin user '${ADMIN_USERNAME}' created successfully (ID: ${result.id})`)
+      console.log(`   Name: ${ADMIN_NAME}`)
+      console.log(`   Email: ${ADMIN_EMAIL || 'none'}`)
+      console.log(`   Role: ${ADMIN_ROLE}`)
+    } else {
+      console.error(`❌ Failed to create admin user: ${result.error}`)
+      process.exit(1)
+    }
     
   } catch (error) {
     console.error('❌ Error during database bootstrap:', error.message)
+    console.error('Stack trace:', error.stack)
     process.exit(1)
   }
 }

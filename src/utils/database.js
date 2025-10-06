@@ -5,14 +5,32 @@ import { dirname, join } from 'path'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-// Database file path (in project root)
-const dbPath = join(__dirname, '../../testament.db')
+// Database file path - use /tmp in serverless environments, project root locally
+function getDbPath() {
+  // Check if we're in a serverless environment (Vercel)
+  if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
+    return '/tmp/testament.db'
+  }
+  
+  // Use environment variable if set, otherwise default to project root
+  const envPath = process.env.DB_PATH
+  if (envPath) {
+    return envPath.startsWith('/') ? envPath : join(__dirname, '../../', envPath)
+  }
+  
+  return join(__dirname, '../../testament.db')
+}
+
+const dbPath = getDbPath()
 
 // Initialize database connection
 let db = null
 
 export function initDatabase() {
   try {
+    console.log(`🔍 Initializing database at path: ${dbPath}`)
+    console.log(`🔍 Environment - VERCEL: ${process.env.VERCEL}, NODE_ENV: ${process.env.NODE_ENV}`)
+    
     db = new Database(dbPath)
     
     // Enable foreign keys
@@ -21,10 +39,11 @@ export function initDatabase() {
     // Create tables if they don't exist
     createTables()
     
-    console.log('Database initialized successfully at:', dbPath)
+    console.log('✅ Database initialized successfully at:', dbPath)
     return db
   } catch (error) {
-    console.error('Failed to initialize database:', error)
+    console.error('❌ Failed to initialize database:', error)
+    console.error('❌ Database path attempted:', dbPath)
     throw error
   }
 }

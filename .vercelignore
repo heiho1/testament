@@ -1,0 +1,51 @@
+# Development files
+.env
+.env.local
+.env.example
+
+# Build artifacts  
+node_modules
+dist
+.vite
+
+# Development database
+testament.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+logs
+
+# IDE files
+.vscode
+.idea
+
+# Git
+.git
+.gitignore
+
+# Documentation (keep deployment guide)
+README.md
+CLAUDE.md
+
+# Development scripts
+server.js
+create-admin-cli.js
+
+# Test files
+*.test.js
+test/
+tests/
+
+# Cache
+.cache
+.tmp
+.temp
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db

@@ -94,3 +94,23 @@ export ADMIN_ROLE=admin
 # Create admin user from system environment
 NODE_ENV=production npm run create-admin -- --from-env
 ```
+
+## Deployment
+
+### Vercel Deployment (Recommended)
+
+Testament is optimized for deployment on Vercel with automatic database and admin user bootstrapping:
+
+1. **Connect to Vercel**: Import your repository at [vercel.com](https://vercel.com)
+2. **Set Environment Variables**: Configure `ADMIN_PASSWORD` (required) and other admin settings
+3. **Deploy**: Vercel automatically builds and deploys with database initialization
+
+See [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md) for complete deployment instructions.
+
+### Manual Deployment
+
+For other platforms:
+1. Build the application: `npm run build`
+2. Set up environment variables for production
+3. Initialize database: `npm run bootstrap:vercel`
+4. Deploy the `dist/` folder and `api/` functions

@@ -4,8 +4,8 @@
  */
 
 import { createHash } from 'crypto'
-import { getUserByUsername, updateUserLastLogin } from '../../../src/utils/database.js'
-import { corsHeaders, ensureDatabase, handleCORS, errorResponse, successResponse } from '../../_utils.js'
+import { getUserByUsername, updateUserLastLogin } from '../../src/utils/database.js'
+import { corsHeaders, ensureDatabase, handleCORS, errorResponse, successResponse } from '../_utils.js'
 
 export default async function handler(req, res) {
   // Set CORS headers

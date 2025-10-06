@@ -34,14 +34,25 @@ export default async function handler(req, res) {
     // Get user from database
     const user = getUserByUsername(username)
     
+    console.log(`🔍 Login attempt for username: ${username}`)
+    console.log(`🔍 User found: ${user ? 'YES' : 'NO'}`)
+    
     if (!user || !user.active) {
+      console.log(`❌ User not found or inactive for username: ${username}`)
       return errorResponse(res, 'Invalid username or password', 401)
     }
     
+    console.log(`🔍 User active: ${user.active}`)
+    console.log(`🔍 Stored hash: ${user.password_hash.substring(0, 8)}...`)
+    console.log(`🔍 Stored salt: ${user.password_salt.substring(0, 8)}...`)
+    
     // Verify password
     const testHash = createHash('sha256').update(password + user.password_salt).digest('hex')
+    console.log(`🔍 Computed hash: ${testHash.substring(0, 8)}...`)
+    console.log(`🔍 Hashes match: ${testHash === user.password_hash}`)
     
     if (testHash !== user.password_hash) {
+      console.log(`❌ Password verification failed for username: ${username}`)
       return errorResponse(res, 'Invalid username or password', 401)
     }
     

@@ -33,11 +33,16 @@ export function ensureDatabase() {
     const adminUsername = process.env.ADMIN_USERNAME || 'admin'
     const adminPassword = process.env.ADMIN_PASSWORD
     
+    console.log(`🔍 Database initialization - Admin username: ${adminUsername}`)
+    console.log(`🔍 Admin password configured: ${adminPassword ? 'YES' : 'NO'}`)
+    
     if (adminPassword) {
       const existingUser = getUserByUsername(adminUsername)
+      console.log(`🔍 Existing admin user found: ${existingUser ? 'YES' : 'NO'}`)
       
       if (!existingUser) {
         const { hash, salt } = hashPassword(adminPassword)
+        console.log(`🔍 Creating new admin user with salt: ${salt.substring(0, 8)}...`)
         const result = createUser(
           adminUsername,
           hash,
@@ -52,7 +57,11 @@ export function ensureDatabase() {
         } else {
           console.error(`❌ Failed to auto-create admin user: ${result.error}`)
         }
+      } else {
+        console.log(`🔍 Admin user exists - hash: ${existingUser.password_hash.substring(0, 8)}..., salt: ${existingUser.password_salt.substring(0, 8)}...`)
       }
+    } else {
+      console.error(`❌ ADMIN_PASSWORD environment variable not set`)
     }
     
     dbInitialized = true
